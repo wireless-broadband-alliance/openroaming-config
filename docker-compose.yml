@@ -5,7 +5,7 @@ services:
   radsecproxy:
     network_mode: host
     build:
-      dockerfile: DockerfileRadSecProxy
+      dockerfile: Dockerfile
       context: .
     volumes:
       - "./configs/radsecproxy/radsecproxy.conf:/etc/radsecproxy.conf"
