@@ -51,7 +51,7 @@ dig_it_naptr() {
 host_it_srv() {
     ${HOSTCMD} -t srv $SRV_HOST | sort -n -k5 |
     while read line; do
-        set $line ; PORT=$(validate_port $7) ; HOST=$(validate_host $8) 
+        set $line ; PORT=$(validate_port $7) ; HOST=$(validate_host $8)
         if [ -n "${HOST}" ] && [ -n "${PORT}" ]; then
             $PRINTCMD "\thost ${HOST%.}:${PORT}\n"
         fi
@@ -70,6 +70,14 @@ host_it_naptr() {
 }
 
 REALM=$(validate_host ${1})
+GSMAPRIVATE="3gppnetwork.org"
+GSMAPUBLIC="pub.3gppnetwork.org"
+
+ORIG=$REALM
+if [[ "$REALM" == *"$GSMAPRIVATE" ]];	then
+    REALM=$(echo ${REALM/$GSMAPRIVATE/$GSMAPUBLIC})
+fi
+
 if [ -z "${REALM}" ]; then
     echo "Error: realm \"${1}\" failed validation"
     usage
@@ -85,7 +93,7 @@ else
 fi
 
 if [ -n "${SERVERS}" ]; then
-    $PRINTCMD "server dynamic_radsec.${REALM} {\n${SERVERS}\n\ttype TLS\n}\n"
+    $PRINTCMD "server dynamic_radsec.${ORIG} {\n${SERVERS}\n\ttype TLS\n}\n"
     exit 0
 fi
 
