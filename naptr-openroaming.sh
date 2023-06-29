@@ -70,6 +70,11 @@ host_it_naptr() {
 }
 
 REALM=$(validate_host ${1})
+
+# 3GPP TS23.003 defines the realm wlan.mnc<mnc>.mcc<mcc>.3gppnetwork.org for use in EAP-SIM, AKA and AKA'
+# These realms are NOT resolvable from the public Internet
+# Instead, GSMA IR.67 defines the use of wlan.mnc<mnc>.mcc<mcc>.pub.3gppnetwork.org for 
+# OpenRoaming based dynamic peer discovery from public Internet
 GSMAPRIVATE="3gppnetwork.org"
 GSMAPUBLIC="pub.3gppnetwork.org"
 
