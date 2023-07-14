@@ -1,14 +1,4 @@
-#! /bin/bash
-
-# 2023/5/29
-# NAPTR/SRV lookup script for OpenRoaming with 3GPP realm conversion.
-# Ref. "WBA OpenRoaming - The Framework to Support WBA's Wi-Fi Federation"
-#   Version 3.0.0
-# This script tries first a modified realm
-#   wlan.mncXXX.mccYYY.pub.3gppnetwork.org , 
-# and tries the original 
-#   wlan.mncXXX.mccYYY.3gppnetwork.org
-# if the first attempt has failed.
+#! /bin/sh
 
 # Example script!
 # This script looks up radsec srv records in DNS for the one
@@ -79,14 +69,7 @@ host_it_naptr() {
     done
 }
 
-REALM_0=$(validate_host ${1})
-if [[ "$REALM_0" =~ "3gppnetwork" ]]; then
-    IS3GPP=true
-    REALM=${REALM_0/3gppnetwork/pub.3gppnetwork}
-else
-    IS3GPP=false
-    REALM=${REALM_0}
-fi
+REALM=$(validate_host ${1})
 if [ -z "${REALM}" ]; then
     echo "Error: realm \"${1}\" failed validation"
     usage
@@ -94,23 +77,15 @@ fi
 
 if [ -x "${DIGCMD}" ]; then
     SERVERS=$(dig_it_naptr)
-    if [ -z "${SERVERS}" ] && $IS3GPP ; then
-        REALM=${REALM_0}
-        SERVERS=$(dig_it_naptr)
-    fi
 elif [ -x "${HOSTCMD}" ]; then
     SERVERS=$(host_it_naptr)
-    if [ -z "${SERVERS}" ] && $IS3GPP ; then
-        REALM=${REALM_0}
-        SERVERS=$(host_it_naptr)
-    fi
 else
     echo "${0} requires either \"dig\" or \"host\" command."
     exit 1
 fi
 
 if [ -n "${SERVERS}" ]; then
-    $PRINTCMD "server dynamic_radsec.${REALM_0} {\n${SERVERS}\n\ttype TLS\n}\n"
+    $PRINTCMD "server dynamic_radsec.${REALM} {\n${SERVERS}\n\ttype TLS\n}\n"
     exit 0
 fi
 
