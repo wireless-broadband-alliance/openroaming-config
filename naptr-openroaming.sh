@@ -70,7 +70,7 @@ dig_it_naptr() {
 host_it_srv() {
     ${HOSTCMD} -t srv $SRV_HOST | sort -n -k5 |
     while read line; do
-        set $line ; PORT=$(validate_port $7) ; HOST=$(validate_host $8)
+        set $line ; PORT=$(validate_port $7) ; HOST=$(validate_host $8) 
         if [ -n "${HOST}" ] && [ -n "${PORT}" ]; then
             $PRINTCMD "\thost ${HOST%.}:${PORT}\n"
         fi
@@ -89,19 +89,6 @@ host_it_naptr() {
 }
 
 REALM=$(validate_host ${1})
-
-# 3GPP TS23.003 defines the realm wlan.mnc<mnc>.mcc<mcc>.3gppnetwork.org for use in EAP-SIM, AKA and AKA'
-# These realms are NOT resolvable from the public Internet
-# Instead, GSMA IR.67 defines the use of wlan.mnc<mnc>.mcc<mcc>.pub.3gppnetwork.org for 
-# OpenRoaming based dynamic peer discovery from public Internet
-GSMAPRIVATE="3gppnetwork.org"
-GSMAPUBLIC="pub.3gppnetwork.org"
-
-ORIG=$REALM
-if [[ "$REALM" == *"$GSMAPRIVATE" ]];	then
-    REALM=$(echo ${REALM/$GSMAPRIVATE/$GSMAPUBLIC})
-fi
-
 if [ -z "${REALM}" ]; then
     echo "Error: realm \"${1}\" failed validation"
     usage
