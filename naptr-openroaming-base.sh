@@ -1,23 +1,4 @@
-#! /bin/bash
-
-# 2023/7/14
-# NAPTR/SRV lookup script for OpenRoaming with 3GPP realm conversion.
-# Ref. "WBA OpenRoaming - The Framework to Support WBA's Wi-Fi Federation"
-#   Version 3.0.0
-# This script rewrites the original 3GPP realm
-#   wlan.mncXXX.mccYYY.3gppnetwork.org
-# into a modified one
-#   wlan.mncXXX.mccYYY.pub.3gppnetwork.org , 
-# and tries NAPTR/SRV lookup.
-# No fallback to the original realm is performed.
-
-# Note:
-# 3GPP TS23.003 defines the realm wlan.mnc<mnc>.mcc<mcc>.3gppnetwork.org
-# for use in EAP-SIM, AKA and AKA'.
-# These realms are NOT resolvable from the public internet.
-# Instead, GSMA IR.67 defines the use of
-# wlan.mnc<mnc>.mcc<mcc>.pub.3gppnetwork.org for OpenRoaming based
-# dynamic peer discovery from public internet.
+#! /bin/sh
 
 # Example script!
 # This script looks up radsec srv records in DNS for the one
@@ -94,11 +75,6 @@ if [ -z "${REALM}" ]; then
     usage
 fi
 
-REALM_0=$REALM
-if [[ "$REALM" =~ "3gppnetwork" ]]; then
-    REALM=${REALM_0/3gppnetwork/pub.3gppnetwork}
-fi
-
 if [ -x "${DIGCMD}" ]; then
     SERVERS=$(dig_it_naptr)
 elif [ -x "${HOSTCMD}" ]; then
@@ -109,7 +85,7 @@ else
 fi
 
 if [ -n "${SERVERS}" ]; then
-    $PRINTCMD "server dynamic_radsec.${REALM_0} {\n${SERVERS}\n\ttype TLS\n}\n"
+    $PRINTCMD "server dynamic_radsec.${REALM} {\n${SERVERS}\n\ttype TLS\n}\n"
     exit 0
 fi
 
