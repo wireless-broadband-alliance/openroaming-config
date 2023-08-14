@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# 2023/7/14
+# Rev. 20230814
+
 # NAPTR/SRV lookup script for OpenRoaming with 3GPP realm conversion.
 # Ref. "WBA OpenRoaming - The Framework to Support WBA's Wi-Fi Federation"
 #   Version 3.0.0
@@ -27,7 +28,7 @@
 # For host command this is column 5, for dig it is column 1.
 
 usage() {
-    echo "Usage: ${0} <realm>"
+    echo "Usage: ${0} <realm> [<NAPTR tag>]"
     exit 1
 }
 
@@ -37,6 +38,7 @@ test -n "${1}" || usage
 DIGCMD=$(command -v dig)
 HOSTCMD=$(command -v host)
 PRINTCMD=$(command -v printf)
+test -n "${2}" && NAPTRTAG="${2}" || NAPTRTAG="aaa+auth:radius.tls.tcp"
 
 validate_host() {
          echo ${@} | tr -d '\n\t\r' | grep -E '^[_0-9a-zA-Z][-._0-9a-zA-Z]*$'
@@ -57,7 +59,7 @@ dig_it_srv() {
 }
 
 dig_it_naptr() {
-    ${DIGCMD} +short naptr ${REALM} | grep aaa+auth:radius.tls.tcp | sort -n -k1 |
+    ${DIGCMD} +short naptr ${REALM} | grep "$NAPTRTAG" | sort -n -k1 |
     while read line; do
         set $line ; TYPE=$3 ; HOST=$(validate_host $6)
         if ( [ "$TYPE" = "\"s\"" ] || [ "$TYPE" = "\"S\"" ] ) && [ -n "${HOST}" ]; then
@@ -78,7 +80,7 @@ host_it_srv() {
 }
 
 host_it_naptr() {
-    ${HOSTCMD} -t naptr ${REALM} | grep aaa+auth:radius.tls.tcp | sort -n -k5 |
+    ${HOSTCMD} -t naptr ${REALM} | grep "$NAPTRTAG" | sort -n -k5 |
     while read line; do
         set $line ; TYPE=$7 ; HOST=$(validate_host ${10})
         if ( [ "$TYPE" = "\"s\"" ] || [ "$TYPE" = "\"S\"" ] ) && [ -n "${HOST}" ]; then
