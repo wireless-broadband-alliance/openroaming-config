@@ -130,7 +130,7 @@ now copy the edited defconfig to .config
 
 now install wpa_supplicant dependencies
 
-    $ sudo apt-get install build-essential libcurl4-openssl-dev libdbus-1-3 libdbus-1-dev libncurses5 libncurses5-devlibncursesw5 libnih1 libnih-dbus1 libnl-3-200 libnl-3-dev libnl-cli-3-200 libnl-cli-3-dev libnl-genl-3-200 libnl-genl-3-dev libnl-nf-3-200 libnl-nf-3-dev libnl-route-3-200libnl-route-3-dev libreadline6 libreadline7 libreadline-dev libssl1.0.2 libssl-dev libssl1.1 libxml2-dev ncurses-bin readline-common zlib1g python python-dbg libncap-dev libpcap0.8-dev
+    $ sudo apt-get install build-essential libcurl4-openssl-dev libdbus-1-3 libdbus-1-dev libncurses5 libncurses5-dev libncursesw5 libnih1 libnih-dbus1 libnl-3-200 libnl-3-dev libnl-cli-3-200 libnl-cli-3-dev libnl-genl-3-200 libnl-genl-3-dev libnl-nf-3-200 libnl-nf-3-dev libnl-route-3-200 libnl-route-3-dev libreadline6 libreadline7 libreadline-dev libssl1.0.2 libssl-dev libssl1.1 libxml2-dev ncurses-bin readline-common zlib1g python python-dbg libncap-dev libpcap0.8-dev
 
 and build wpa_supplicant
 
