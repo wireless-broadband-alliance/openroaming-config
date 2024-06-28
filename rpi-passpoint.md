@@ -14,7 +14,7 @@ https://wkumari.dev/2023/10/16/mikrotik-openroaming
 
 This demo uses Raspberry Pi 4 Model B with kernel version v5.10.
 
-Download the image from https://downloads.raspberrypi.org/raspbian/images/
+Download the image from https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-03-25/
 and write to the SD-card.
 
 ## Wi-Fi Dongle
