@@ -18,9 +18,6 @@ To get started with setting up RadSec and Dynamic Peer Discovery through DNS for
   - Configurable in `radsecproxy` 
 - **naptr-openroaming.sh**: Script for NAPTR OpenRoaming. 
   - Configurable in `radsecproxy` 
-- **OpenRoaming CSR config.cfg**: Configuration file for OpenRoaming Certificate Signing Request (CSR).
-  - `openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048`
-  - `openssl req -new -key private.key -out request.csr -config configs/OpenRoaming\ CSR\ config.cfg`
 
 ## Contributing
 
