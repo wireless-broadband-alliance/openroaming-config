@@ -16,3 +16,17 @@ easily.
 Here are some configuration example that would be useful 
 for protecting OpenRoaming RadSec endpoints.
 
+To see the statistics, 
+
+```
+# fail2ban-client status freeradius
+Status for the jail: freeradius
+|- Filter
+|  |- Currently failed: 1
+|  |- Total failed:     176
+|  `- File list:        /var/log/radius/radius.log
+`- Actions
+   |- Currently banned: 0
+   |- Total banned:     45
+   `- Banned IP list:
+```
