@@ -1,0 +1,11 @@
+
+[freeradius]
+enabled = true
+ignoreip = 
+maxretry = 3
+findtime = 60
+bantime = 30m
+port     = 1812,1813,2083
+filter = freeradius
+logpath  = /var/log/radius/radius.log
+
